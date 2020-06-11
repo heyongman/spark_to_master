@@ -59,6 +59,7 @@ object StructuredStreamingDemo {
 
     // 查询
     val query = wc.writeStream
+      .queryName("demo")
       .outputMode("update")
       .format("console")
       .option("truncate", "false")

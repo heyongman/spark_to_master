@@ -28,9 +28,9 @@ object Demo {
     val value: Dataset[Row] = df.map(it => {
       it
     })
-    ds.rdd.toDF
+//    ds.rdd.toDF
 //      .map(it => it)
-      .show()
+//      .show()
 
 //    value.foreach(println(_))
 
@@ -52,7 +52,7 @@ object Demo {
     })
 
 
-//    df.withColumn("week_list",function($"type",$"weeks")).show()
+    df.withColumn("weeks",function($"type",$"weeks")).show()
 
 
 
