@@ -1,7 +1,7 @@
 package com.he.spark2
 
 import org.apache.log4j.{Level, Logger}
-import org.apache.spark.sql.{Dataset, SparkSession}
+import org.apache.spark.sql.{Dataset, Encoder, Row, SparkSession}
 
 
 /**
@@ -26,6 +26,16 @@ object DeptStat {
     val employee = spark.read.json("/Users/he/proj/bigdata_proj/spark_to_master/src/main/resources/employee.json")
     val employee2 = spark.read.json("/Users/he/proj/bigdata_proj/spark_to_master/src/main/resources/employee2.json")
 
+
+    /**
+      * spark2.+对dataframe map需要隐式转换
+      * 一般还是udf实现
+      */
+    implicit val encoder: Encoder[Row] = org.apache.spark.sql.Encoders.kryo[Row]
+    val frame = (1 to 10).toDF("col")
+    val value: Dataset[Row] = frame.map(it => {
+      it
+    })
 
     /**
       * typed操作

@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<configuration>
+    <statusListener class="ch.qos.logback.core.status.NopStatusListener" />
+
+    <property name="log.dir" value="../log" />
+    <timestamp key="ymd" datePattern="yyyy-MM-dd"/>
+    <timestamp key="bySecond" datePattern="yyyyMMdd'-'HHmmss"/>
+    <property name="CONSOLE_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS}|%highlight(%level)|%yellow(%thread)|%blue(%logger:%line)|%msg%n"/>
+    <property name="FILE_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS}|%level|%thread|%logger{0}:%line|%msg%n"/>
+
+    <!--限制的日志-->
+    <logger name="org.apache.kafka" level="WARN"/>
+<!--    <logger name="org.apache.avro.ipc.netty.NettyServer" level="WARN"/>-->
+    <logger name="com.client.DataServer" level="WARN"/>
+    <logger name="org.spark_project.jetty" level="WARN"/>
+    <logger name="org.apache.spark" level="WARN"/>
+
+    <!-- 控制台输出 [%yellow(%thread)] -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_PATTERN}</pattern>
+        </encoder>
+<!--        <filter class="com.hikcreate.hdmp.scheduler.utils.MDCFilter">-->
+<!--        </filter>-->
+    </appender>
+
+<!--    <appender name="COLLECTOR" class="com.hikcreate.bigdata.hdip.utils.LogCollector">-->
+<!--    </appender>-->
+
+
+    <!--ROLLING_FILE  [%thread]-->
+    <appender name="ROLLING_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--日志名称，如果没有File 属性，那么只会使用FileNamePattern的文件路径规则-->
+        <file>${log.dir}/hdip.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${log.dir}/hdip.log.%d{yyyy-MM-dd}</FileNamePattern>
+            <MaxHistory>10</MaxHistory>
+        </rollingPolicy>
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>${FILE_PATTERN}</pattern>
+        </encoder>
+<!--        <filter class="com.hikcreate.bigdata.hdip.utils.MDCFilter">-->
+<!--        </filter>-->
+    </appender>
+
+    <!--ROLLING_FILE_ERROR  [%thread]-->
+<!--    <appender name="ROLLING_FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+<!--        &lt;!&ndash;日志名称，如果没有File 属性，那么只会使用FileNamePattern的文件路径规则&ndash;&gt;-->
+<!--        <file>${log.dir}/hdip-error.log</file>-->
+<!--        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+<!--            <FileNamePattern>${log.dir}/hdip-error.log.%d{yyyy-MM-dd}</FileNamePattern>-->
+<!--            <MaxHistory>10</MaxHistory>-->
+<!--        </rollingPolicy>-->
+<!--        <encoder>-->
+<!--            <charset>UTF-8</charset>-->
+<!--            <pattern>${FILE_PATTERN}</pattern>-->
+<!--        </encoder>-->
+<!--        <filter class="com.hikcreate.bigdata.hdip.utils.MDCErrorFilter">-->
+<!--        </filter>-->
+<!--    </appender>-->
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+<!--        <appender-ref ref="COLLECTOR" />-->
+        <appender-ref ref="ROLLING_FILE" />
+<!--        <appender-ref ref="ROLLING_FILE_ERROR" />-->
+    </root>
+</configuration>
