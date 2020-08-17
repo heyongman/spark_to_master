@@ -37,9 +37,7 @@ object DeptStat {
       it
     })
 
-    /**
-      * typed操作
-      */
+
     //    算子方式
     val df = employee
       .filter($"age" > 20)
@@ -54,8 +52,12 @@ object DeptStat {
     //    spark.sql("select b.name,a.gender,avg(a.salary) as avg_salary,avg(a.age) as avg_age from employee a left join dept b on a.depId = b.id  where a.age > 20 group by b.name,a.gender").explain()
     //    spark.sql("select b.name,a.gender,avg(a.salary) as avg_salary,avg(a.age) as avg_age from employee a left join dept b on a.depId = b.id  where a.age > 20 group by b.name,a.gender").show()
 
-
+    /**
+      * typed操作
+      */
     val deptDS: Dataset[Dept] = dept.as[Dept]
+    import org.apache.spark.sql.expressions.scalalang.typed
+    deptDS.filter(_.name == "aa").groupByKey(_.name).agg(typed.count(_.id))
 
     //    两种去重方式
     employee.distinct()

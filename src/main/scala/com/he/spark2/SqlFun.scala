@@ -34,11 +34,11 @@ object SqlFun {
 //      解析字段中的json
       .withColumn("j",lit("{\"k1\":1,\"k2\":\"kk\"}"))
       .withColumn("k",from_json($"j",
-        StructType(
-          Seq(StructField("k1",IntegerType,nullable = false),
-            StructField("k2",StringType,nullable = false))
-        )))
-      .withColumn("l",$"k".getField("k1"))
+        new StructType()
+          .add("k1",IntegerType,nullable = false)
+          .add("k2",StringType,nullable = false)
+        ))
+      .withColumn("l",$"k.k1")
       .withColumn("m",$"k".getField("k2"))
 //      窗口函数
       .withColumn("n",row_number() over Window.partitionBy($"f").orderBy($"a"))
@@ -48,6 +48,10 @@ object SqlFun {
     val schema = new StructType()
       .add("_c0",IntegerType,nullable = true)
       .add("carat",DoubleType,nullable = true)
+
+//    获取json的schema
+    println(frame.select(schema_of_json(frame.select("j").head().getString(0)) as "schema").first())
+    println("*"*10)
 
 //    排序
 //    val value = frame.sort(asc("a"), desc("b"))

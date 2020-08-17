@@ -2,7 +2,7 @@
 <configuration>
     <statusListener class="ch.qos.logback.core.status.NopStatusListener" />
 
-    <property name="log.dir" value="../log" />
+    <property name="log.dir" value="./log" />
     <timestamp key="ymd" datePattern="yyyy-MM-dd"/>
     <timestamp key="bySecond" datePattern="yyyyMMdd'-'HHmmss"/>
     <property name="CONSOLE_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS}|%highlight(%level)|%yellow(%thread)|%blue(%logger:%line)|%msg%n"/>
@@ -31,9 +31,9 @@
     <!--ROLLING_FILE  [%thread]-->
     <appender name="ROLLING_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!--日志名称，如果没有File 属性，那么只会使用FileNamePattern的文件路径规则-->
-        <file>${log.dir}/hdip.log</file>
+        <file>${log.dir}/spark.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>${log.dir}/hdip.log.%d{yyyy-MM-dd}</FileNamePattern>
+            <FileNamePattern>${log.dir}/spark.log.%d{yyyy-MM-dd}</FileNamePattern>
             <MaxHistory>10</MaxHistory>
         </rollingPolicy>
         <encoder>
