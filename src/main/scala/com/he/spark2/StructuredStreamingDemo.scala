@@ -20,7 +20,7 @@ object StructuredStreamingDemo {
     val schema = new StructType()
       .add("record1",StringType)
       .add("record2",StringType)
-
+//    nc -lk 9999
     val inputs = spark.readStream
 //      .schema(schema)
       .format("socket")

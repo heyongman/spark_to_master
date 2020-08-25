@@ -1,6 +1,7 @@
 package com.he.spark2
 
-import org.apache.log4j.{Level, Logger}
+import java.util.concurrent.CountDownLatch
+
 import org.apache.spark.sql.{Dataset, Encoder, Row, SparkSession}
 
 
@@ -17,15 +18,14 @@ object DeptStat {
     val spark = SparkSession.builder()
       .appName("Spark2Demo")
       .master("local[4]")
-      //      .enableHiveSupport()
       .getOrCreate()
+
     import spark.implicits._
     import org.apache.spark.sql.functions._
 
-    val dept = spark.read.json("/Users/he/proj/bigdata_proj/spark_to_master/src/main/resources/department.json")
-    val employee = spark.read.json("/Users/he/proj/bigdata_proj/spark_to_master/src/main/resources/employee.json")
-    val employee2 = spark.read.json("/Users/he/proj/bigdata_proj/spark_to_master/src/main/resources/employee2.json")
-
+    val dept = spark.read.json("D:\\proj-20190610\\proj\\bigdata_proj\\spark_to_master\\src\\main\\resources\\department.json")
+    val employee = spark.read.json("D:\\proj-20190610\\proj\\bigdata_proj\\spark_to_master\\src\\main\\resources\\employee.json")
+    val employee2 = spark.read.json("D:\\proj-20190610\\proj\\bigdata_proj\\spark_to_master\\src\\main\\resources\\employee2.json")
 
     /**
       * spark2.+对dataframe map需要隐式转换
