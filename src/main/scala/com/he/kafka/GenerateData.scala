@@ -14,7 +14,7 @@ object GenerateData {
 
   def main(args: Array[String]): Unit = {
     val properties = new Properties()
-    properties.put("bootstrap.servers","172.30.163.98:9093")
+    properties.put("bootstrap.servers","192.168.33.117:9093")
     properties.put("key.serializer",classOf[StringSerializer])
     properties.put("value.serializer",classOf[StringSerializer])
     val producer = new KafkaProducer[String,String](properties)

@@ -4,7 +4,8 @@ import java.sql.Timestamp
 import java.text.SimpleDateFormat
 
 import com.google.gson.{JsonObject, JsonParser}
-import com.he.utils.{ConfigurationManager, RedisClient}
+import com.he.client.RedisPool
+import com.he.utils.ConfigurationManager
 import org.apache.spark.sql._
 import org.apache.spark.sql.streaming.Trigger
 import org.apache.spark.sql.types.StringType
@@ -74,7 +75,7 @@ object CarSpeedAnalyse {
       .writeStream
       .foreachBatch((batchDF: DataFrame, batchId: Long) => {
       batchDF.foreachPartition(partDF => {
-        val jedisPool = RedisClient.pool.getResource
+        val jedisPool = RedisPool.pool.getResource
         partDF.foreach(row => {
           val cameraId = row.getString(0)
           val avg_speed = row.getString(1)
@@ -83,7 +84,7 @@ object CarSpeedAnalyse {
           jedisPool.select(ConfigurationManager.getInteger("redis.db"))
           jedisPool.hset(day + "_" + cameraId, minute, avg_speed)
         })
-        RedisClient.pool.returnResource(jedisPool)
+        RedisPool.pool.returnResource(jedisPool)
       })
     })
       .start()

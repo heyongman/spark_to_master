@@ -3,9 +3,11 @@ package com.he
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.functions._
 import org.apache.spark.sql.types.{DecimalType, DoubleType}
+import org.slf4j.LoggerFactory
 
 object Test13 {
   def main(args: Array[String]): Unit = {
+    val log = LoggerFactory.getLogger(this.getClass.getName.stripSuffix("$"))
     val spark = SparkSession.builder().appName("test10").master("local[*]").getOrCreate()
     import spark.implicits._
 
@@ -17,7 +19,7 @@ object Test13 {
 //    <=> 两者为null返回相等，===两者为null返回不相等，在inner join时结果明显，但一般为null的值关联时无需保留
     frame.join(frame1,$"a.a" === $"b.a","inner")
         .show()
-
+    log.info("faaa")
 
     spark.close()
   }

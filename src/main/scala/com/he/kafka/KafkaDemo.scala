@@ -2,7 +2,8 @@ package com.he.kafka
 
 import java.io.File
 
-import com.he.utils.{ConfigurationManager, RedisClient}
+import com.he.client.RedisPool
+import com.he.utils.ConfigurationManager
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.common.TopicPartition
 import org.apache.kafka.common.serialization.StringDeserializer
@@ -48,7 +49,7 @@ object KafkaDemo {
     val testOnBorrow = false
     val testOnReturn = false
     val maxWaitMillis = 5000
-    val jedis = RedisClient.pool.getResource
+    val jedis = RedisPool.pool.getResource
     jedis.select(ConfigurationManager.getInteger("redis.dbIndex"))
     val keys = jedis.keys(topics(0) + "*")
     val keys_2 = jedis.keys(topics(1) +"*")
@@ -75,7 +76,7 @@ object KafkaDemo {
         rdd.foreachPartition(partition=>{
           val o = offsetRanges(TaskContext.get.partitionId)
           println(s"${o.topic} ${o.partition} ${o.fromOffset} ${o.untilOffset}")
-          val jedis_jason = RedisClient.pool.getResource
+          val jedis_jason = RedisPool.pool.getResource
           jedis_jason.select(ConfigurationManager.getInteger("redis.dbIndex"))
           partition.foreach(pair=>{
             //自己的计算逻辑;

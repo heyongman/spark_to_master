@@ -3,7 +3,7 @@ package com.he.mechinelearning.shangxuetang.trafficpredict
 import java.text.SimpleDateFormat
 import java.util.Date
 
-import com.he.utils.RedisClient
+import com.he.client.RedisPool
 import org.apache.spark.ml.classification.LogisticRegressionModel
 import org.apache.spark.ml.linalg.Vectors
 import org.apache.spark.sql.SparkSession
@@ -27,7 +27,7 @@ object Predict {
     val day = dayFormat.format(date)//yyyyMMdd
 
     // fetch data from redis
-    val jedis = RedisClient.pool.getResource
+    val jedis = RedisPool.pool.getResource
     jedis.select(1)
 
     // find relative road monitors for specified road
@@ -81,6 +81,6 @@ object Predict {
       }
     })
 
-    RedisClient.pool.returnResource(jedis)
+    RedisPool.pool.returnResource(jedis)
   }
 }

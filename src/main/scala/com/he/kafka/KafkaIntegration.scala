@@ -22,7 +22,7 @@ object KafkaIntegration {
     val spark = SparkSession.builder()
       .appName("KafkaIntegration")
       .master("local[*]")
-      .config("spark.sql.shuffle.partitions", "8")
+      .config("spark.sql.shuffle.partitions", "4")
       .config("spark.serializer", classOf[KryoSerializer].getName)
       .getOrCreate()
 
@@ -38,7 +38,7 @@ object KafkaIntegration {
     val df1: DataFrame = spark
       .readStream
       .format("kafka")
-      .option("kafka.bootstrap.servers", "172.24.101.167:9093")
+      .option("kafka.bootstrap.servers", "192.168.41.68:9093")
       .option("subscribe", "test1")
       .option("startingOffsets","earliest")
       .load()
@@ -46,7 +46,7 @@ object KafkaIntegration {
     val df2: DataFrame = spark
       .readStream
       .format("kafka")
-      .option("kafka.bootstrap.servers", "172.24.101.167:9093")
+      .option("kafka.bootstrap.servers", "192.168.41.68:9093")
       .option("subscribe", "test2")
       .option("startingOffsets","earliest")
       .load()
@@ -113,7 +113,7 @@ object KafkaIntegration {
       .format("console")
       .option("kafka.bootstrap.servers", "172.24.101.167:9093")
       .option("topic","result")
-      .option("checkpointLocation", "D://tmp/")
+      .option("checkpointLocation", "/tmp/")
       .option("truncate", "false")
       .option("numRows", 100)
       .outputMode(OutputMode.Append())

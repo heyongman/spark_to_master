@@ -4,7 +4,8 @@ import java.text.SimpleDateFormat
 import java.util
 import java.util.{Calendar, Date}
 
-import com.he.utils.{ConfigurationManager, RedisClient}
+import com.he.client.RedisPool
+import com.he.utils.ConfigurationManager
 import org.apache.spark.ml.classification.LogisticRegression
 import org.apache.spark.ml.feature.LabeledPoint
 import org.apache.spark.ml.linalg.Vectors
@@ -23,7 +24,7 @@ object TrainLR {
       .config("spark.sql.shuffle.partitions", "4")
       .getOrCreate()
 
-    val jedisPool = RedisClient.pool.getResource
+    val jedisPool = RedisPool.pool.getResource
     jedisPool.select(ConfigurationManager.getInteger("redis.db"))
     val dayFormat = new SimpleDateFormat("yyyyMMdd")
     val minuteFormat = new SimpleDateFormat("HHmm")
@@ -108,7 +109,7 @@ object TrainLR {
     })
 
 
-    RedisClient.pool.returnResource(jedisPool)
+    RedisPool.pool.returnResource(jedisPool)
     spark.close()
   }
 }
